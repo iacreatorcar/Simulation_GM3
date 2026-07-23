@@ -471,7 +471,25 @@ body {
 
 .master-fader .fader-label { color: #ffcf5c; border-color: #7a5a00; }
 
-.deck-cmd { background: #000; border-radius: 6px; border: 1px solid #222; }
+/* Keypad + command line stacked together (fills the space right under the
+   keypad instead of leaving it empty and dropping the cmd bar full-width
+   far below everything else). */
+.keypad-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 220px;
+  flex: 1;
+}
+
+.deck-cmd {
+  background: #000;
+  border-radius: 6px;
+  border: 1px solid #222;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
 /* Command log: scrolling history above the input, like MA3's command feedback area */
 .cmd-log {
@@ -1029,8 +1047,10 @@ body {
 
 .statusbar {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 4px;
   padding: 6px 16px;
   font-size: 0.8rem;
   opacity: 0.85;

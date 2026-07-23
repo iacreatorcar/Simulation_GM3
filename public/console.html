@@ -260,45 +260,49 @@
             </div>
           </div>
 
-          <!-- Numeric keypad: lateral to the faders, at the fader/cursor row level -->
-          <div class="deck-keypad" id="keypad">
-            <button class="key key-fn" data-key="AT">AT</button>
-            <button class="key key-fn" data-key="GO">GO</button>
-            <button class="key key-fn" data-key="OFF">OFF</button>
-            <button class="key key-fn" data-key="CLR">CLR</button>
+          <!-- Numeric keypad + command line: stacked together so the command
+               bar sits right under the keypad instead of leaving empty space
+               below it and appearing full-width far down the page. -->
+          <div class="keypad-column">
+            <div class="deck-keypad" id="keypad">
+              <button class="key key-fn" data-key="AT">AT</button>
+              <button class="key key-fn" data-key="GO">GO</button>
+              <button class="key key-fn" data-key="OFF">OFF</button>
+              <button class="key key-fn" data-key="CLR">CLR</button>
 
-            <button class="key" data-key="7">7</button>
-            <button class="key" data-key="8">8</button>
-            <button class="key" data-key="9">9</button>
-            <button class="key key-fn" data-key="BACK">&larr;</button>
+              <button class="key" data-key="7">7</button>
+              <button class="key" data-key="8">8</button>
+              <button class="key" data-key="9">9</button>
+              <button class="key key-fn" data-key="BACK">&larr;</button>
 
-            <button class="key" data-key="4">4</button>
-            <button class="key" data-key="5">5</button>
-            <button class="key" data-key="6">6</button>
-            <button class="key key-fn" data-key="THRU">THRU</button>
+              <button class="key" data-key="4">4</button>
+              <button class="key" data-key="5">5</button>
+              <button class="key" data-key="6">6</button>
+              <button class="key key-fn" data-key="THRU">THRU</button>
 
-            <button class="key" data-key="1">1</button>
-            <button class="key" data-key="2">2</button>
-            <button class="key" data-key="3">3</button>
-            <button class="key key-fn key-enter" data-key="ENTER">ENTER</button>
+              <button class="key" data-key="1">1</button>
+              <button class="key" data-key="2">2</button>
+              <button class="key" data-key="3">3</button>
+              <button class="key key-fn key-enter" data-key="ENTER">ENTER</button>
 
-            <button class="key" data-key="0">0</button>
-            <button class="key" data-key=".">.</button>
-            <button class="key key-fn" data-key="+">+</button>
+              <button class="key" data-key="0">0</button>
+              <button class="key" data-key=".">.</button>
+              <button class="key key-fn" data-key="+">+</button>
+            </div>
+
+            <div class="deck-cmd">
+              <div class="cmd-log" id="cmdLog"></div>
+              <div class="cmd-line">
+                <span class="cmd-prompt">&gt;</span>
+                <input type="text" id="cmdInput" class="cmd-input" placeholder="AT 50, FULL, OFF, CLEAR" autocomplete="off">
+                <button id="cmdExecute" class="btn small">Execute</button>
+              </div>
+              <div class="statusbar">
+                <span id="statusText">Ready.</span>
+                <span class="statusbar-credit">Carmine D'Alise - Founder</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-
-      <div class="deck-cmd">
-        <div class="cmd-log" id="cmdLog"></div>
-        <div class="cmd-line">
-          <span class="cmd-prompt">&gt;</span>
-          <input type="text" id="cmdInput" class="cmd-input" placeholder="AT 50, FULL, OFF, CLEAR" autocomplete="off">
-          <button id="cmdExecute" class="btn small">Execute</button>
-        </div>
-        <div class="statusbar">
-          <span id="statusText">Ready.</span>
-          <span class="statusbar-credit">Carmine D'Alise - Founder</span>
         </div>
       </div>
     </section>
