@@ -1028,9 +1028,18 @@ body {
 .cmd-input:focus { outline: none; box-shadow: 0 0 6px var(--fg); }
 
 .statusbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 6px 16px;
   font-size: 0.8rem;
   opacity: 0.85;
+}
+
+.statusbar-credit {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  letter-spacing: 0.5px;
 }
 
 /* --- Toast --- */
