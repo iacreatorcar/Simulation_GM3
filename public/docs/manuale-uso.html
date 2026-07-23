@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulation GM3 - Manuale d'Uso</title>
+<style>
+  :root {
+    --bg: #000; --fg: #0f0; --fg-dim: #0a0; --panel: #001100; --border: #0f0;
+    --font: 'Courier New', Courier, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font);
+    padding: 40px 20px; line-height: 1.6;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  h1 { text-shadow: 0 0 8px var(--fg); border-bottom: 2px solid var(--border); padding-bottom: 12px; }
+  h2 {
+    margin-top: 46px; text-transform: uppercase; letter-spacing: 1px;
+    border-bottom: 1px solid var(--border); padding-bottom: 6px;
+  }
+  h3 { margin-top: 22px; }
+  code {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 3px;
+    padding: 1px 5px; font-size: 0.9em;
+  }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid rgba(0,255,0,0.15); }
+  th { color: var(--fg-dim); text-transform: uppercase; font-size: 0.75rem; }
+  .step {
+    display: flex; gap: 12px; margin: 14px 0; align-items: flex-start;
+  }
+  .step .n {
+    flex-shrink: 0; width: 26px; height: 26px; border: 1px solid var(--border);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; background: var(--panel);
+  }
+  .panel-box {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+    padding: 14px 18px; margin-top: 14px;
+  }
+  .panel-box h3 { margin-top: 0; }
+  .toc { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 14px 20px; }
+  .toc a { display: block; padding: 2px 0; }
+  a { color: var(--fg); }
+  kbd {
+    background: #1a1a1a; border: 1px solid var(--border); border-radius: 3px;
+    padding: 1px 7px; font-size: 0.85em;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Manuale d'Uso - Simulation GM3</h1>
+    <p>Guida pratica a come funziona il simulatore, pannello per pannello. Per il funzionamento tecnico interno vedi <a href="scheda-tecnica.html">la scheda tecnica</a>.</p>
+
+    <div class="toc">
+      <a href="#avvio">1. Avvio</a>
+      <a href="#layout">2. Layout della console</a>
+      <a href="#primi-passi">3. Primi passi (percorso consigliato)</a>
+      <a href="#pannelli">4. Pannelli, uno per uno</a>
+      <a href="#hotkeys">5. Scorciatoie da tastiera</a>
+      <a href="#comandi">6. Command line</a>
+    </div>
+
+    <h2 id="avvio">1. Avvio</h2>
+    <div class="step"><span class="n">1</span><div><code>npm install</code> nella cartella del progetto (solo la prima volta)</div></div>
+    <div class="step"><span class="n">2</span><div><code>npm start</code> per avviare il server</div></div>
+    <div class="step"><span class="n">3</span><div>Apri il browser su <code>http://localhost:3000</code></div></div>
+
+    <h2 id="layout">2. Layout della console</h2>
+    <p>La schermata è divisa in due blocchi, come una consolle fisica:</p>
+    <ul>
+      <li><strong>Schermo (sopra)</strong> — tab: Pools, Patch, Executor, Stage View, Design, Catalyst, Setup.</li>
+      <li><strong>Deck fisico (sotto)</strong> — 16 fader canale, riga pulsanti Flash, encoder Pan/Tilt/Zoom/Color/Gobo, fader Grand Master/Sub Master, tastierino numerico, command line.</li>
+    </ul>
+    <p>A sinistra dello schermo c'è una fila di icone rapide (Setup, Help, Tema, Pools, Patch, 3D). A destra dello schermo un menu numerato (1-8) per saltare tra le sezioni.</p>
+
+    <h2 id="primi-passi">3. Primi passi (percorso consigliato)</h2>
+    <div class="step"><span class="n">1</span><div>Vai su <strong>Patch</strong> e assegna un nome/tipo a qualche fixture (o lascia i valori di default).</div></div>
+    <div class="step"><span class="n">2</span><div>Torna su <strong>Pools</strong>, muovi qualche fader nel deck sotto.</div></div>
+    <div class="step"><span class="n">3</span><div>In <strong>Scene Pool</strong>, clicca "Reset Demo" per caricare 3 scene di esempio, oppure salva la tua con "Store Scene".</div></div>
+    <div class="step"><span class="n">4</span><div>Apri il tab <strong>Stage View</strong> per vedere i fasci in tempo reale.</div></div>
+    <div class="step"><span class="n">5</span><div>Vai su <strong>Executor → Automation</strong>, premi "Go": le scene si alternano da sole.</div></div>
+    <div class="step"><span class="n">6</span><div>Prova la <strong>command line</strong> in basso: scrivi <code>FULL</code> e premi Invio.</div></div>
+
+    <h2 id="pannelli">4. Pannelli, uno per uno</h2>
+
+    <div class="panel-box">
+      <h3>Fader Sheet (deck)</h3>
+      <p>16 fader verticali. <strong>Click</strong> sulla barra per saltare a un valore, <strong>trascina</strong> il cursore bianco per regolarlo con precisione. Funziona anche con il touch. Il LED sopra ogni fader si accende quando il canale è &gt; 0%.</p>
+    </div>
+
+    <div class="panel-box">
+      <h3>Cue Pool</h3>
+      <p>Scrivi un nome, un tempo di dissolvenza e (opzionale) un effetto automatico, poi "Store Cue". Le cue vengono salvate sul server (si perdono se riavvii <code>npm start</code>). Premi <strong>GO</strong> su una cue per richiamarla: se ha un effetto assegnato, parte in automatico per 8 secondi.</p>
+    </div>
+
+    <div class="panel-box">
+      <h3>Scene Pool</h3>
+      <p>Salva lo stato attuale dei fader come "scena" nel browser. <strong>GO</strong> per richiamarla, <strong>X</strong> per eliminarla. Persistente anche dopo aver chiuso la pagina. "Reset Demo" ricarica le 3 scene dimostrative.</p>
+    </div>
+
+    <div class="panel-box">
+      <h3>Patch / Fixture Sheet</h3>
+      <p>Per ognuno dei 16 canali: nome, tipo di fixture (PAR LED, Moving Head Spot/Wash, Beam, Strobe, Wash RGBW, Mirror Ball, Fog Machine, LED Bar, Blinder, Fresnel, Profile/Spot) e indirizzo DMX. La colonna "Dim" mostra il valore live del fader. Pan/Tilt sono decorativi (non pilotano un vero motore).</p>
+    </div>
+
+    <div class="panel-box">
+      <h3>Design Creator</h3>
+      <p>Assegna un colore a ogni canale cliccando gli swatch, poi "Store Design" per salvare livelli + colori insieme come un "look" richiamabile. Diverso dalle Scene: qui c'è anche il colore, non solo l'intensità.</p>
+    </div>
+
+    <div class="panel-box">
+      <h3>Stage View</h3>
+      <p>Simulatore live: truss in alto, palco in prospettiva sul fondo. Ogni fixture disegna un fascio diverso a seconda del tipo impostato nel Patch — le teste mobili lasciano una macchia netta a terra, i wash allargano un ventaglio morbido, gli specchi (Mirror Ball) sparano scintille, la nebbia (Fog) crea foschia, gli strobo lampeggiano. Gli encoder Pan/Tilt/Zoom/Color/Gobo (nel deck) muovono davvero questi fasci in diretta.</p>
+    </div>
+
+    <div class="panel-box">
+      <h3>Catalyst (media server)</h3>
+      <p>4 layer video assegnabili da una libreria di clip demo. Ogni layer ha opacità e blend mode (normal/add/multiply/screen). La "Output Preview" compone davvero i layer attivi. Durante l'Automation, il layer 1 avanza da solo in sincrono con le scene.</p>
+    </div>
+
+    <div class="panel-box">
+      <h3>Executor (moduli)</h3>
+      <p>Contiene: Advanced (Blackout/Full/Freeze rapidi), Effects (Chaser/Rainbow/Strobe + swatch colore), Groups (raggruppa canali), Automation (playback scene a intervallo), DMX Monitor (valori 0-255 live), Export/Import (scene in <code>.json</code>), Hotkeys (promemoria scorciatoie), Timecode (sequenza a tempo).</p>
+    </div>
+
+    <div class="panel-box">
+      <h3>Setup</h3>
+      <p>Pagina decorativa che riproduce il menu Setup di una console reale (Show/Console/User/Network). Le voci mostrano un avviso "non implementato" al click — serve a familiarizzare con la struttura del menu, non è funzionale.</p>
+    </div>
+
+    <h2 id="hotkeys">5. Scorciatoie da tastiera</h2>
+    <table>
+      <tr><th>Tasto</th><th>Azione</th></tr>
+      <tr><td><kbd>B</kbd></td><td>Blackout (tutti i canali a 0%)</td></tr>
+      <tr><td><kbd>F</kbd></td><td>Full (tutti i canali a 100%)</td></tr>
+      <tr><td><kbd>S</kbd></td><td>Focus sul campo "Store Scene"</td></tr>
+      <tr><td><kbd>D</kbd></td><td>Cambia tema chiaro/scuro</td></tr>
+      <tr><td><kbd>1</kbd>-<kbd>8</kbd></td><td>Focus sul fader del canale corrispondente</td></tr>
+    </table>
+    <p>Disattivate mentre scrivi in un campo di testo.</p>
+
+    <h2 id="comandi">6. Command line</h2>
+    <p>In fondo al deck, oppure con il tastierino numerico a fianco dei fader:</p>
+    <table>
+      <tr><th>Comando</th><th>Effetto</th></tr>
+      <tr><td><code>FULL</code></td><td>Tutti i canali al 100%</td></tr>
+      <tr><td><code>OFF</code> / <code>BLACKOUT</code></td><td>Tutti i canali a 0%</td></tr>
+      <tr><td><code>AT &lt;valore&gt;</code></td><td>Imposta i canali al valore indicato (0-100)</td></tr>
+      <tr><td><code>CLEAR</code></td><td>Svuota la selezione corrente</td></tr>
+    </table>
+    <p>Tasti fisici sul tastierino: <code>AT</code>, <code>GO</code> (= FULL), <code>OFF</code>, <code>CLR</code>, cifre <code>0-9</code>, <code>THRU</code>, <code>ENTER</code> (esegue), freccia (cancella ultimo carattere).</p>
+  </div>
+</body>
+</html>

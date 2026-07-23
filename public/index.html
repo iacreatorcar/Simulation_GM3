@@ -3,340 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GrandMA3 Training System</title>
+<title>Simulation GrandMA - Real Time Lighting Console Trainer</title>
 <link rel="stylesheet" href="css/style.css">
+<style>
+  .landing {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    background: radial-gradient(ellipse at center, #001a00 0%, #000 70%);
+  }
+
+  .landing-logo {
+    font-size: clamp(2rem, 6vw, 3.6rem);
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 0 16px var(--fg), 0 0 30px rgba(0,255,0,0.4);
+    margin: 0;
+  }
+
+  .landing-sub {
+    color: var(--fg-dim);
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .landing-badge {
+    display: inline-block;
+    margin-top: 22px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 14px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: rgba(0,255,0,0.08);
+  }
+
+  .landing-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    max-width: 720px;
+    margin: 40px 0;
+    width: 100%;
+  }
+
+  .landing-feature {
+    border: 1px solid var(--fg-dim);
+    border-radius: 6px;
+    padding: 12px 10px;
+    font-size: 0.78rem;
+    color: var(--fg-dim);
+    background: rgba(0,255,0,0.03);
+  }
+
+  .landing-feature strong {
+    display: block;
+    color: var(--fg);
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+  }
+
+  .enter-btn {
+    background: transparent;
+    color: var(--fg);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 44px;
+    font-family: var(--font);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 0 10px rgba(0,255,0,0.25);
+    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  .enter-btn:hover {
+    background: rgba(0,255,0,0.12);
+    box-shadow: 0 0 20px rgba(0,255,0,0.5);
+  }
+
+  .enter-btn:active { transform: scale(0.97); }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(0,255,0,0.25); }
+    50% { box-shadow: 0 0 22px rgba(0,255,0,0.55); }
+  }
+
+  .landing-footer {
+    margin-top: 46px;
+    font-size: 0.72rem;
+    color: var(--fg-dim);
+    opacity: 0.8;
+  }
+
+  .landing-footer a { color: var(--fg); }
+</style>
 </head>
 <body>
-  <!-- Top bar: console identity + global tools -->
-  <header class="topbar">
-    <div class="topbar-left">
-      <span class="logo">Simulation Real Time</span>
-      <span class="logo-sub">GrandMA Digital</span>
-    </div>
-    <div class="topbar-actions">
-      <button id="tutorialToggle" class="btn small" title="Guided tour of the console">Tutorial</button>
-      <button id="darkModeToggle" class="btn small" title="Toggle light/dark theme">Display</button>
-      <span id="clock" class="clock"></span>
-    </div>
-  </header>
+  <main class="landing">
+    <div class="landing-badge">Real-Time Demo · Training Simulator</div>
+    <h1 class="landing-logo">SIMULATION GRANDMA</h1>
+    <div class="landing-sub">GrandMA Digital &middot; Live Console Trainer</div>
 
-  <!-- Compact console body: left icon rail, screen+deck, right section rail -->
-  <div class="console">
-
-    <!-- Left rail: global tool icons, like the vertical icon column of the real software -->
-    <div class="side-rail side-rail-left">
-      <button class="rail-btn" data-action="setup" title="Setup">&#9881;</button>
-      <button class="rail-btn" data-action="tutorial" title="Help / Guided tour">?</button>
-      <button class="rail-btn" data-action="theme" title="Toggle display theme">&#9680;</button>
-      <button class="rail-btn" data-action="pools" title="Pools window">&#9638;</button>
-      <button class="rail-btn" data-action="patch" title="Patch window">&#9776;</button>
-      <button class="rail-btn" data-action="stage" title="3D / Stage View">&#9635;</button>
+    <div class="landing-features">
+      <div class="landing-feature"><strong>16 Channels</strong>Fader deck, drag or touch</div>
+      <div class="landing-feature"><strong>Live Stage View</strong>Beam simulator per fixture type</div>
+      <div class="landing-feature"><strong>Real-Time Cues</strong>Supabase-backed, synced instantly</div>
+      <div class="landing-feature"><strong>Patch &amp; Design</strong>Fixtures, colors, looks</div>
     </div>
 
-    <div class="console-main">
+    <a class="enter-btn" href="console.html">Enter Simulation</a>
 
-    <!-- Screen: tabbed, shows Pools (cue/scene/modules) -->
-    <section class="console-screen">
-      <div class="screen-tabs">
-        <button class="tab-btn active" data-tab="pools">Pools</button>
-        <button class="tab-btn" data-tab="patch">Patch</button>
-        <button class="tab-btn" data-tab="executor">Executor</button>
-        <button class="tab-btn" data-tab="stage">Stage View</button>
-        <button class="tab-btn" data-tab="design">Design</button>
-        <button class="tab-btn" data-tab="catalyst">Catalyst</button>
-        <button class="tab-btn" data-tab="setup">Setup</button>
-      </div>
-      <div class="screen-body">
-      <div class="screen-content">
-
-        <div class="tab-pane" data-pane="pools">
-          <section class="pool-window" id="panelCue">
-            <div class="pool-title">Cue Pool <span class="help" data-tip="Create, list and delete cues through the server's REST API.">?</span></div>
-            <form id="cueForm" class="cue-form">
-              <input type="text" id="cueName" placeholder="Cue name" required>
-              <input type="number" id="cueFadeTime" placeholder="Fade (s)" value="3" min="0" step="0.5">
-              <select id="cueEffect" title="Automated effect played back when this cue is fired">
-                <option value="none">No Effect</option>
-                <option value="chaser">Chaser</option>
-                <option value="rainbow">Rainbow Sweep</option>
-                <option value="strobe">Strobe</option>
-              </select>
-              <button type="submit" class="btn">Store Cue</button>
-            </form>
-            <ul id="cueList" class="cue-list"></ul>
-          </section>
-
-          <section class="pool-window" id="panelScenes">
-            <div class="pool-title">Scene Pool <span class="help" data-tip="Scenes save the current fader state in the browser (localStorage).">?</span></div>
-            <div class="scene-actions">
-              <input type="text" id="sceneName" placeholder="Scene name">
-              <button id="saveSceneBtn" class="btn">Store Scene</button>
-              <button id="resetDemoBtn" class="btn small" title="Clear stored scenes and reload the 3 demo scenes">Reset Demo</button>
-            </div>
-            <ul id="sceneList" class="scene-list"></ul>
-          </section>
-        </div>
-
-        <div class="tab-pane" data-pane="patch">
-          <section class="pool-window" id="panelPatch">
-            <div class="pool-title">Fixture Sheet <span class="help" data-tip="Assign a fixture type and DMX address to each of the 8 channels. Dim reflects the live fader value. Pan/Tilt/Gobo are decorative (not wired to real movement).">?</span></div>
-            <table class="patch-table">
-              <thead>
-                <tr>
-                  <th>FID</th><th>Name</th><th>Type</th><th>DMX</th>
-                  <th>Dim</th><th>Pan</th><th>Tilt</th><th>Gobo</th>
-                </tr>
-              </thead>
-              <tbody id="patchBody"></tbody>
-            </table>
-          </section>
-        </div>
-
-        <div class="tab-pane" data-pane="executor" hidden>
-          <!-- Executor pool: additional modules attach here -->
-          <div id="modulesRoot" class="executor-pool"></div>
-        </div>
-
-        <div class="tab-pane tab-pane-stage" data-pane="stage" hidden>
-          <section class="pool-window" id="panelStage">
-            <div class="pool-title">Stage View - Live Preview <span class="help" data-tip="Beam simulator with truss and stage floor. Reflects fader levels live. The Pan/Tilt/Zoom/Color/Gobo encoders (beside the Fader Sheet) move, resize, recolor and pattern the beams in real time - drag them to see the effect.">?</span></div>
-            <canvas id="stageCanvas" width="640" height="260"></canvas>
-          </section>
-        </div>
-
-        <div class="tab-pane tab-pane-design" data-pane="design" hidden>
-          <section class="pool-window" id="panelDesign">
-            <div class="pool-title">Design Creator <span class="help" data-tip="Assign a color to each fixture and save the look as a Design. Applying a design sets both fader levels and beam colors on Stage View.">?</span></div>
-            <div class="scene-actions">
-              <input type="text" id="designName" placeholder="Design name">
-              <button id="saveDesignBtn" class="btn">Store Design</button>
-            </div>
-            <table class="design-table">
-              <thead><tr><th>Ch</th><th>Fixture</th><th>Color</th><th>Level</th></tr></thead>
-              <tbody id="designBody"></tbody>
-            </table>
-            <ul id="designList" class="scene-list"></ul>
-          </section>
-        </div>
-
-        <div class="tab-pane tab-pane-catalyst" data-pane="catalyst" hidden>
-          <section class="pool-window" id="panelCatalyst">
-            <div class="pool-title">Catalyst - Media Server <span class="help" data-tip="Green Hippo Catalyst-style media layers: assign a clip to each layer, set opacity and blend, and see the composited output preview.">?</span></div>
-            <div class="catalyst-body">
-              <div class="catalyst-layers" id="catalystLayers"></div>
-              <div class="catalyst-side">
-                <div class="catalyst-preview-label">Output Preview</div>
-                <canvas id="catalystPreview" width="220" height="140"></canvas>
-                <div class="catalyst-media-label">Media Browser</div>
-                <ul class="catalyst-media-list" id="catalystMediaList"></ul>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <div class="tab-pane tab-pane-setup" data-pane="setup" hidden>
-          <div class="setup-window">
-            <div class="setup-titlebar">
-              <span>Setup</span>
-              <button class="setup-close" id="setupClose">X</button>
-            </div>
-            <div class="setup-columns">
-              <div class="setup-col">
-                <div class="setup-col-title show-title">Show<br><small id="setupShowName">new show 2026-07-23</small></div>
-                <button class="setup-item">Patch &amp; Fixture Schedule</button>
-                <button class="setup-item">Patch only (Live)</button>
-                <button class="setup-item">Playback &amp; MIB Timing</button>
-                <button class="setup-item">Remote Inputs Setup</button>
-                <button class="setup-item">Auto Create</button>
-                <button class="setup-item">Import Create</button>
-                <button class="setup-item">Cloning</button>
-              </div>
-              <div class="setup-col">
-                <div class="setup-col-title">Console<br><small>v3.1.2.5</small></div>
-                <button class="setup-item">Desk Lights</button>
-                <button class="setup-item">Screen Options</button>
-                <button class="setup-item">Local Settings</button>
-                <button class="setup-item">Global Settings</button>
-                <button class="setup-item">Timecode</button>
-                <button class="setup-item">Date &amp; Time</button>
-                <button class="setup-item">Software Update</button>
-              </div>
-              <div class="setup-col">
-                <div class="setup-col-title">User<br><small>administrator</small></div>
-                <button class="setup-item">Defaults</button>
-                <button class="setup-item">Window Settings</button>
-                <button class="setup-item">Grand Master &amp; B.O. etc.</button>
-                <button class="setup-item">Oops Settings</button>
-                <button class="setup-item">Store Options</button>
-                <button class="setup-item">User &amp; Profiles Setup</button>
-                <button class="setup-item">Edit Keyboard Shortcuts</button>
-              </div>
-              <div class="setup-col">
-                <div class="setup-col-title">Network<br><small>Master 1</small></div>
-                <button class="setup-item" id="setupNetworkCfg">MA Network Configuration</button>
-                <button class="setup-item">MA Network Monitoring</button>
-                <button class="setup-item">sACN Configuration</button>
-                <button class="setup-item">Art-Net Configuration</button>
-                <button class="setup-item">CITP Network Configuration</button>
-                <button class="setup-item">PSN Network Configuration</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Right rail: numbered section shortcuts, like the real software's vertical menu -->
-      <div class="side-rail side-rail-right">
-        <button class="rail-num-btn" data-tab="patch"><span class="rail-num">1</span>Fixture</button>
-        <button class="rail-num-btn" data-tab="pools"><span class="rail-num">2</span>Preset</button>
-        <button class="rail-num-btn" data-tab="pools"><span class="rail-num">3</span>Sequence<br>Sheet</button>
-        <button class="rail-num-btn" data-tab="patch"><span class="rail-num">4</span>Tracking<br>Sheet</button>
-        <button class="rail-num-btn" data-tab="executor"><span class="rail-num">5</span>Phaser+<br>Steps</button>
-        <button class="rail-num-btn" data-tab="stage"><span class="rail-num">6</span>3D</button>
-        <button class="rail-num-btn" data-tab="executor"><span class="rail-num">7</span>Timecode</button>
-        <button class="rail-num-btn" data-tab="setup"><span class="rail-num">8</span>Setup</button>
-      </div>
-      </div>
-    </section>
-
-    <!-- Physical deck: faders, executor row, encoders, command line -->
-    <section class="console-deck">
-      <div class="deck-faders" id="panelFaders">
-        <div class="pool-title">Fader Sheet <span class="help" data-tip="Drag the handle to set intensity. Click the track to jump to a value.">?</span></div>
-        <div class="fader-encoder-row">
-          <div class="fader-column">
-            <div id="faderBank" class="fader-bank"></div>
-            <!-- Executor button row: momentary flash buttons, aligned under each fader -->
-            <div class="deck-executor-row" id="executorRow"></div>
-          </div>
-
-          <!-- Encoders: draggable with mouse or touch, like a real console's rotary controls -->
-          <div class="deck-encoders" id="encoderBank">
-            <div class="encoder-slot" data-index="0">
-              <div class="encoder" id="encoder0"></div>
-              <span class="encoder-value" id="encoderVal0">50</span>
-              <span class="encoder-label">Pan</span>
-            </div>
-            <div class="encoder-slot" data-index="1">
-              <div class="encoder" id="encoder1"></div>
-              <span class="encoder-value" id="encoderVal1">50</span>
-              <span class="encoder-label">Tilt</span>
-            </div>
-            <div class="encoder-slot" data-index="2">
-              <div class="encoder" id="encoder2"></div>
-              <span class="encoder-value" id="encoderVal2">50</span>
-              <span class="encoder-label">Zoom</span>
-            </div>
-            <div class="encoder-slot" data-index="3">
-              <div class="encoder" id="encoder3"></div>
-              <span class="encoder-value" id="encoderVal3">50</span>
-              <span class="encoder-label">Color</span>
-            </div>
-            <div class="encoder-slot" data-index="4">
-              <div class="encoder" id="encoder4"></div>
-              <span class="encoder-value" id="encoderVal4">50</span>
-              <span class="encoder-label">Gobo</span>
-            </div>
-          </div>
-
-          <!-- Master/Slave faders: scale the overall Stage View output, like a Grand Master -->
-          <div class="deck-masters" id="masterBank">
-            <div class="master-fader" data-master="grand">
-              <span class="fader-value" id="masterValGrand">100%</span>
-              <div class="fader-track master-track" id="masterTrackGrand">
-                <div class="fader-fill master-fill" id="masterFillGrand"></div>
-                <div class="fader-handle master-handle" id="masterHandleGrand"></div>
-              </div>
-              <span class="fader-label">Grand<br>Master</span>
-            </div>
-            <div class="master-fader" data-master="sub">
-              <span class="fader-value" id="masterValSub">100%</span>
-              <div class="fader-track master-track" id="masterTrackSub">
-                <div class="fader-fill master-fill" id="masterFillSub"></div>
-                <div class="fader-handle master-handle" id="masterHandleSub"></div>
-              </div>
-              <span class="fader-label">Sub<br>Master</span>
-            </div>
-          </div>
-
-          <!-- Numeric keypad: lateral to the faders, at the fader/cursor row level -->
-          <div class="deck-keypad" id="keypad">
-            <button class="key key-fn" data-key="AT">AT</button>
-            <button class="key key-fn" data-key="GO">GO</button>
-            <button class="key key-fn" data-key="OFF">OFF</button>
-            <button class="key key-fn" data-key="CLR">CLR</button>
-
-            <button class="key" data-key="7">7</button>
-            <button class="key" data-key="8">8</button>
-            <button class="key" data-key="9">9</button>
-            <button class="key key-fn" data-key="BACK">&larr;</button>
-
-            <button class="key" data-key="4">4</button>
-            <button class="key" data-key="5">5</button>
-            <button class="key" data-key="6">6</button>
-            <button class="key key-fn" data-key="THRU">THRU</button>
-
-            <button class="key" data-key="1">1</button>
-            <button class="key" data-key="2">2</button>
-            <button class="key" data-key="3">3</button>
-            <button class="key key-fn key-enter" data-key="ENTER">ENTER</button>
-
-            <button class="key" data-key="0">0</button>
-            <button class="key" data-key=".">.</button>
-            <button class="key key-fn" data-key="+">+</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="deck-cmd">
-        <div class="cmd-log" id="cmdLog"></div>
-        <div class="cmd-line">
-          <span class="cmd-prompt">&gt;</span>
-          <input type="text" id="cmdInput" class="cmd-input" placeholder="AT 50, FULL, OFF, CLEAR" autocomplete="off">
-          <button id="cmdExecute" class="btn small">Execute</button>
-        </div>
-        <div class="statusbar">
-          <span id="statusText">Ready.</span>
-          <span class="statusbar-credit">Alise - Founder</span>
-        </div>
-      </div>
-    </section>
-
+    <div class="landing-footer">
+      Alise &middot; Founder &nbsp;|&nbsp; <a href="docs/manuale-uso.html">Manuale d'uso</a> &middot; <a href="docs/scheda-tecnica.html">Scheda tecnica</a>
     </div>
-
-  </div>
-
-  <!-- Toast notifications -->
-  <div id="toastContainer" class="toast-container"></div>
-
-  <!-- Tutorial mode overlay -->
-  <div id="tutorialOverlay" class="tutorial-overlay" style="display:none">
-    <div class="tutorial-box">
-      <div class="tutorial-header">
-        <span>Guided Tour</span>
-        <span id="tutorialCounter" class="tutorial-counter"></span>
-      </div>
-      <p id="tutorialText"></p>
-      <div class="tutorial-actions">
-        <button id="tutorialPrev" class="btn small">&lt; Prev</button>
-        <button id="tutorialNext" class="btn small">Next &gt;</button>
-        <button id="tutorialClose" class="btn small">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Supabase client (CDN, no bundler): usato per Cue Pool con persistenza + realtime -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <script src="js/app.js"></script>
-  <script src="js/module-advance.js"></script>
-  <script src="js/module-effects.js"></script>
-  <script src="js/module-groups.js"></script>
-  <script src="js/module-automation.js"></script>
-  <script src="js/module-monitoring.js"></script>
-  <script src="js/module-export.js"></script>
-  <script src="js/module-hotkeys.js"></script>
-  <script src="js/module-timecode.js"></script>
-  <script src="js/module-catalyst.js"></script>
+  </main>
 </body>
 </html>

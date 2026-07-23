@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulation GM3 - Presentazione</title>
+<style>
+  :root {
+    --bg: #000; --fg: #0f0; --fg-dim: #0a0; --panel: #001100; --border: #0f0;
+    --font: 'Courier New', Courier, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font);
+    padding: 40px 20px; line-height: 1.6;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 50px; }
+  h1 { font-size: 2.4rem; margin: 0 0 8px; text-shadow: 0 0 10px var(--fg); }
+  .tagline { color: var(--fg-dim); font-size: 1.1rem; }
+  .badge {
+    display: inline-block; border: 1px solid var(--border); border-radius: 4px;
+    padding: 4px 12px; margin-top: 16px; font-size: 0.8rem; text-transform: uppercase;
+    letter-spacing: 1px; background: rgba(0,255,0,0.08);
+  }
+  h2 {
+    border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 50px;
+    text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem;
+  }
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px; margin-top: 20px;
+  }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+    padding: 16px;
+  }
+  .card h3 { margin: 0 0 8px; font-size: 1rem; }
+  .card p { margin: 0; color: var(--fg-dim); font-size: 0.9rem; }
+  .flow {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    justify-content: center; margin: 24px 0; font-size: 0.9rem;
+  }
+  .flow span.step {
+    border: 1px solid var(--border); border-radius: 4px; padding: 8px 14px;
+    background: var(--panel);
+  }
+  .flow span.arrow { color: var(--fg-dim); }
+  .callout {
+    border: 1px dashed var(--fg-dim); border-radius: 6px; padding: 16px 20px;
+    margin-top: 40px; background: rgba(255,255,0,0.03);
+  }
+  .callout strong { color: #ff5; }
+  footer { text-align: center; margin-top: 60px; color: var(--fg-dim); font-size: 0.8rem; }
+  a { color: var(--fg); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>SIMULATION GM3</h1>
+      <div class="tagline">Console luci da browser, ispirata al workflow grandMA3</div>
+      <div class="badge">Solo uso dimostrativo / training interno</div>
+    </header>
+
+    <p>Simulation GM3 è un simulatore di consolle luci che gira interamente nel browser: nessuna installazione, nessun hardware dedicato, nessuna licenza software. Riproduce il flusso di lavoro base di una consolle da moving-light — patch, cue, playback, automazione — per far esercitare velocemente un operatore su concetti e comandi reali prima di toccare una console vera.</p>
+
+    <h2>Perché</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Formazione senza hardware</h3>
+        <p>Chi si avvicina a una consolle luci può esercitarsi su patch, cue e playback senza prenotare una console fisica.</p>
+      </div>
+      <div class="card">
+        <h3>Zero setup</h3>
+        <p><code>npm install && npm start</code> e si apre nel browser. Nessuna dipendenza frontend, nessun build step.</p>
+      </div>
+      <div class="card">
+        <h3>Concetti trasferibili</h3>
+        <p>Command line, patch fixture, cue con effetto automatico, master/slave: stessa logica delle console professionali.</p>
+      </div>
+    </div>
+
+    <h2>Come funziona (in breve)</h2>
+    <div class="flow">
+      <span class="step">Patch fixture</span><span class="arrow">→</span>
+      <span class="step">Imposta fader</span><span class="arrow">→</span>
+      <span class="step">Store Cue / Scene</span><span class="arrow">→</span>
+      <span class="step">GO / Automation</span><span class="arrow">→</span>
+      <span class="step">Stage View live</span>
+    </div>
+
+    <h2>Cosa include</h2>
+    <div class="grid">
+      <div class="card"><h3>16 canali</h3><p>Fader drag/click, mouse e touch, con LED di stato.</p></div>
+      <div class="card"><h3>Patch &amp; Fixture Sheet</h3><p>12 tipi di fixture (PAR, Moving Head, Wash, Mirror Ball, Fog, Blinder...).</p></div>
+      <div class="card"><h3>Cue Pool con effetti</h3><p>Ogni cue può portare un effetto automatico (chaser/rainbow/strobe) al GO.</p></div>
+      <div class="card"><h3>Stage View</h3><p>Simulatore a canvas: fasci diversi per tipo di fixture, truss, palco.</p></div>
+      <div class="card"><h3>Design Creator</h3><p>Assegna colori per canale e salva il "look" come Design riutilizzabile.</p></div>
+      <div class="card"><h3>Catalyst</h3><p>Pannello media server (4 layer, blend, opacità) con preview composita reale.</p></div>
+      <div class="card"><h3>Timecode</h3><p>Sequenza automatica a tempo, richiama scene/effetti a marcatori prestabiliti.</p></div>
+      <div class="card"><h3>Command line + keypad</h3><p><code>AT</code>, <code>FULL</code>, <code>OFF</code>, <code>CLEAR</code>, tastierino fisico su schermo.</p></div>
+    </div>
+
+    <div class="callout">
+      <strong>Nota:</strong> il progetto è pensato per demo e training interno. Le cue vivono in memoria sul server (si perdono al riavvio), scene/patch/design vivono nel <code>localStorage</code> del browser. Non è pensato per uso multi-utente in produzione — dettagli e percorso di scalabilità in <a href="scheda-tecnica.html">scheda tecnica</a>.
+    </div>
+
+    <footer>
+      Documentazione completa: <a href="manuale-uso.html">Manuale d'uso</a> · <a href="scheda-tecnica.html">Scheda tecnica</a> · Repo: <a href="https://github.com/iacreatorcar/Simulation_GM3">github.com/iacreatorcar/Simulation_GM3</a>
+    </footer>
+  </div>
+</body>
+</html>
