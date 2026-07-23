@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulation GM3 - Scheda Tecnica</title>
+<title>Simulation GM3 - Technical Sheet</title>
 <style>
   :root {
     --bg: #000; --fg: #0f0; --fg-dim: #0a0; --panel: #001100; --border: #0f0;
@@ -47,118 +47,131 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>Scheda Tecnica - Simulation GM3</h1>
+    <h1>Technical Sheet - Simulation GM3</h1>
     <div>
       <span class="badge">Vanilla JS</span>
       <span class="badge">Node.js + Express</span>
+      <span class="badge">Supabase (Postgres + Realtime)</span>
       <span class="badge">Zero build step</span>
-      <span class="badge">Solo demo/training</span>
+      <span class="badge">Demo / training use</span>
     </div>
 
     <div class="toc">
-      <a href="#stack">1. Stack tecnologico</a>
-      <a href="#architettura">2. Architettura</a>
-      <a href="#struttura">3. Struttura progetto</a>
+      <a href="#stack">1. Technology stack</a>
+      <a href="#architecture">2. Architecture</a>
+      <a href="#structure">3. Project structure</a>
       <a href="#dataflow">4. Data flow</a>
-      <a href="#api">5. API REST</a>
-      <a href="#persistenza">6. Persistenza dati</a>
-      <a href="#limiti">7. Limiti e scalabilità</a>
-      <a href="#requisiti">8. Requisiti</a>
+      <a href="#api">5. REST API &amp; Supabase</a>
+      <a href="#persistence">6. Data persistence</a>
+      <a href="#limits">7. Limits and scalability</a>
+      <a href="#requirements">8. Requirements</a>
     </div>
 
-    <h2 id="stack">1. Stack tecnologico</h2>
+    <h2 id="stack">1. Technology stack</h2>
     <table>
-      <tr><th>Livello</th><th>Tecnologia</th></tr>
-      <tr><td>Frontend</td><td>HTML5 semantico + CSS3 puro + JavaScript ES6 (vanilla, nessun framework, nessun bundler)</td></tr>
-      <tr><td>Backend</td><td>Node.js + Express</td></tr>
-      <tr><td>Persistenza client</td><td><code>localStorage</code> del browser (scene, patch, design, tema)</td></tr>
-      <tr><td>Persistenza server</td><td>Array in memoria (cue), azzerato al riavvio del processo</td></tr>
-      <tr><td>Grafica</td><td>Canvas 2D nativo (Stage View, Catalyst preview)</td></tr>
+      <tr><th>Layer</th><th>Technology</th></tr>
+      <tr><td>Frontend</td><td>Semantic HTML5 + plain CSS3 + JavaScript ES6 (vanilla, no framework, no bundler)</td></tr>
+      <tr><td>Backend</td><td>Node.js + Express (static file serving, legacy fallback API)</td></tr>
+      <tr><td>Realtime persistence</td><td>Supabase (Postgres + Realtime), called directly from the browser</td></tr>
+      <tr><td>Client persistence</td><td><code>localStorage</code> (scenes, patch, design, theme)</td></tr>
+      <tr><td>Hosting</td><td>Vercel (static output + serverless functions in <code>api/</code>)</td></tr>
+      <tr><td>Graphics</td><td>Native 2D Canvas (Stage View, Catalyst preview)</td></tr>
     </table>
 
-    <h2 id="architettura">2. Architettura</h2>
-    <pre>Browser (public/)                    Server (server.js)
-┌─────────────────────┐              ┌─────────────────────┐
-│ index.html            │              │ Express app           │
-│  ├── app.js (core)      │──fetch()──▶ │  ├── /api/cue/*         │
-│  ├── module-*.js (x9)   │◀──JSON──── │  ├── /api/health        │
-│  └── style.css           │              │  └── static file server │
-└─────────────────────┘              └─────────────────────┘
-        │
-        ▼
-   localStorage (scene, patch, design, tema)</pre>
+    <h2 id="architecture">2. Architecture</h2>
+    <pre>Browser (public/)                          Supabase (Postgres + Realtime)
+┌───────────────────────┐              ┌───────────────────────────┐
+│ console.html            │              │ table: cues                 │
+│  ├── app.js (core)        │──REST───▶ │  ├── insert/select/delete       │
+│  ├── module-*.js (x9)     │◀─realtime── │  └── Row Level Security policy │
+│  └── style.css              │              └───────────────────────────┘
+└───────────────────────┘
+        │                                Vercel (api/)
+        ▼                                ┌───────────────────────┐
+   localStorage                          │ /api/config              │
+   (scenes, patch,                       │  → exposes Supabase URL   │
+    design, theme)                       │    + anon key to frontend │
+                                          └───────────────────────┘</pre>
 
-    <p>Ogni <code>module-*.js</code> è uno script indipendente (IIFE) che legge/scrive lo stato condiviso su <code>window.GMA3</code> e inserisce il proprio pannello nel DOM. Il server conosce solo le cue; tutto il resto vive lato client.</p>
+    <p>Every <code>module-*.js</code> is an independent script (IIFE) that reads/writes shared state on <code>window.GMA3</code> and injects its own panel into the DOM. Cue data lives in Supabase and is shared/synced in real time across every open session; everything else lives in the browser.</p>
 
-    <h2 id="struttura">3. Struttura progetto</h2>
+    <h2 id="structure">3. Project structure</h2>
     <pre>grandma3-project/
-├── server.js                 API REST + logging + static server
+├── server.js                  Express: static serving + legacy in-memory cue API
+├── api/                       Vercel serverless functions (config, health)
+├── vercel.json                 Static output config, framework auto-detect disabled
 ├── package.json
 ├── public/
-│   ├── index.html             Shell console: tab schermo + deck fisico
-│   ├── css/style.css           Tema green terminal, skin console/deck
+│   ├── index.html               Landing page ("Enter Simulation")
+│   ├── console.html              Console shell: screen tabs + physical deck
+│   ├── css/style.css              Green-terminal theme, console/deck skin
+│   ├── docs/                     Servable copies of the HTML docs
 │   └── js/
-│       ├── app.js               Core: fader, cue, scene, patch, design,
-│       │                        command line, encoder, render Stage View
-│       └── module-*.js          Pannelli auto-registranti (9 moduli)
-├── samples/default-scenes.json  Pacchetto scene demo importabile
-└── docs/                      Documentazione (Markdown + HTML)</pre>
+│       ├── app.js                  Core: faders, cues (Supabase), scenes, patch,
+│       │                          design, command line, encoders, Stage View
+│       └── module-*.js              Self-registering panels (9 modules)
+├── supabase/schema.sql         Table + RLS policies + realtime publication
+├── samples/default-scenes.json  Ready-to-import demo scene pack
+└── docs/                       Documentation (Markdown + HTML)</pre>
 
     <h2 id="dataflow">4. Data flow</h2>
     <h3>Fader (drag/click)</h3>
-    <pre>evento puntatore → calcolo percentuale → state.faders[i] aggiornato → repaint DOM + Stage View</pre>
-    <h3>Cue</h3>
-    <pre>form submit → POST /api/cue/create → validazione server → 201 + cue → GET /api/cue/list → render griglia</pre>
-    <h3>Scena</h3>
-    <pre>Store Scene → localStorage.setItem → render lista
-GO → localStorage.getItem → state.faders = scena → repaint</pre>
-    <h3>Automazione</h3>
-    <pre>setInterval(N secondi) → scena successiva → applica fader → sincronizza layer Catalyst</pre>
+    <pre>pointer event → percentage calculation → state.faders[i] updated → DOM + Stage View repaint</pre>
+    <h3>Cue (Supabase)</h3>
+    <pre>form submit → supabase.from('cues').insert(...) → Realtime event fired
+                                                    ↓
+                                    every open session: loadCues() → re-render grid</pre>
+    <h3>Scene</h3>
+    <pre>Store Scene → localStorage.setItem → render list
+GO → localStorage.getItem → state.faders = scene → repaint</pre>
+    <h3>Automation</h3>
+    <pre>setInterval(N seconds) → next scene → apply faders → sync Catalyst layer</pre>
 
-    <h2 id="api">5. API REST</h2>
+    <h2 id="api">5. REST API &amp; Supabase</h2>
     <table>
-      <tr><th>Metodo</th><th>Rotta</th><th>Scopo</th></tr>
-      <tr><td>GET</td><td><code>/api/health</code></td><td>Verifica stato server</td></tr>
-      <tr><td>POST</td><td><code>/api/cue/create</code></td><td>Crea cue (nome, fadeTime, faders, effect)</td></tr>
-      <tr><td>GET</td><td><code>/api/cue/list</code></td><td>Elenca tutte le cue</td></tr>
-      <tr><td>GET</td><td><code>/api/cue/:id</code></td><td>Legge una cue</td></tr>
-      <tr><td>DELETE</td><td><code>/api/cue/:id</code></td><td>Elimina una cue</td></tr>
+      <tr><th>Method</th><th>Route / call</th><th>Purpose</th></tr>
+      <tr><td>GET</td><td><code>/api/health</code></td><td>Server health check</td></tr>
+      <tr><td>GET</td><td><code>/api/config</code></td><td>Exposes Supabase URL/anon key to the frontend</td></tr>
+      <tr><td>-</td><td><code>supabase.from('cues').insert()</code></td><td>Create a cue (primary path)</td></tr>
+      <tr><td>-</td><td><code>supabase.from('cues').select()</code></td><td>List cues (primary path)</td></tr>
+      <tr><td>-</td><td><code>supabase.from('cues').delete()</code></td><td>Delete a cue (primary path)</td></tr>
+      <tr><td>POST/GET/DELETE</td><td><code>/api/cue/*</code></td><td>Legacy in-memory fallback, used only if Supabase isn't configured</td></tr>
     </table>
-    <p>Dettaglio completo con esempi di richiesta/risposta: <a href="API.md">docs/API.md</a>.</p>
+    <p>Full detail with request/response examples: <a href="API.md">docs/API.md</a>.</p>
 
-    <h2 id="persistenza">6. Persistenza dati</h2>
+    <h2 id="persistence">6. Data persistence</h2>
     <table>
-      <tr><th>Dato</th><th>Dove vive</th><th>Sopravvive al riavvio server?</th><th>Condiviso tra utenti?</th></tr>
-      <tr><td>Cue</td><td>Array in memoria sul server</td><td>No</td><td>Sì, tra chi punta allo stesso server</td></tr>
-      <tr><td>Scene</td><td><code>localStorage</code> del browser</td><td>Sì (per browser)</td><td>No</td></tr>
-      <tr><td>Patch fixture</td><td><code>localStorage</code></td><td>Sì (per browser)</td><td>No</td></tr>
-      <tr><td>Design</td><td><code>localStorage</code></td><td>Sì (per browser)</td><td>No</td></tr>
-      <tr><td>Tema</td><td><code>localStorage</code></td><td>Sì (per browser)</td><td>No</td></tr>
+      <tr><th>Data</th><th>Where it lives</th><th>Survives a restart?</th><th>Shared across users?</th></tr>
+      <tr><td>Cues</td><td>Supabase (Postgres)</td><td>Yes</td><td>Yes, in real time (Realtime subscription)</td></tr>
+      <tr><td>Scenes</td><td>Browser <code>localStorage</code></td><td>Yes (per browser)</td><td>No</td></tr>
+      <tr><td>Fixture patch</td><td><code>localStorage</code></td><td>Yes (per browser)</td><td>No</td></tr>
+      <tr><td>Design</td><td><code>localStorage</code></td><td>Yes (per browser)</td><td>No</td></tr>
+      <tr><td>Theme</td><td><code>localStorage</code></td><td>Yes (per browser)</td><td>No</td></tr>
     </table>
 
-    <h2 id="limiti">7. Limiti e scalabilità</h2>
+    <h2 id="limits">7. Limits and scalability</h2>
     <div class="warn">
-      <strong>Uso previsto: demo e training interno.</strong> Non progettato per produzione multi-utente.
+      <strong>Intended use: demo and internal training.</strong> Not designed for multi-tenant production.
     </div>
     <ul>
-      <li>Le cue vivono in un singolo processo Node — con più repliche del server (es. dietro un load balancer) ogni istanza avrebbe cue diverse.</li>
-      <li>Nessuna autenticazione: chiunque raggiunga il server può creare/eliminare cue.</li>
-      <li>Nessun database: al riavvio del server tutte le cue spariscono.</li>
-      <li>Scene/patch/design sono per-browser: due postazioni diverse non condividono lo stato.</li>
+      <li>The Supabase table uses public read/insert/delete Row Level Security policies — fine for a demo where anyone with the link can create/delete cues, not appropriate for real/sensitive data.</li>
+      <li>No authentication: anyone who opens the app can create/delete cues shared by everyone else.</li>
+      <li>Scenes/patch/design are per-browser: two different stations don't share that state.</li>
+      <li>The legacy Express in-memory fallback (used only without Supabase configured) resets on every restart and doesn't scale across multiple server instances.</li>
     </ul>
-    <p>Percorso per renderlo scalabile (vedi anche <a href="TECHNICAL.md">docs/TECHNICAL.md</a>):</p>
+    <p>Path to a production-ready setup (see also <a href="TECHNICAL.md">docs/TECHNICAL.md</a>):</p>
     <ol>
-      <li>Sostituire l'array cue in memoria con un database (Postgres, Redis, ecc.).</li>
-      <li>Spostare scene/patch/design lato server, associate a un utente/sessione.</li>
-      <li>Aggiungere autenticazione se multi-utente.</li>
-      <li>Per deploy serverless (Vercel, ecc.): serve uno store esterno, il processo Node persistente attuale non è compatibile con funzioni stateless.</li>
+      <li>Add authentication (Supabase Auth) and scope RLS policies per user/session instead of public access.</li>
+      <li>Move scenes/patch/design server-side (Supabase tables) instead of per-browser <code>localStorage</code>, so a setup is shared across stations.</li>
+      <li>Consider rate-limiting/quotas on the public demo instance if left open on the internet.</li>
     </ol>
 
-    <h2 id="requisiti">8. Requisiti</h2>
+    <h2 id="requirements">8. Requirements</h2>
     <ul>
-      <li>Node.js (qualsiasi versione recente con supporto Express 4)</li>
-      <li>Browser moderno con supporto Canvas 2D, <code>localStorage</code>, ES6</li>
-      <li>Nessuna GPU, nessun plugin, nessuna installazione lato client</li>
+      <li>Node.js (any recent version with Express 4 support) for local development</li>
+      <li>A Supabase project (free tier is enough) for real-time cue persistence</li>
+      <li>Modern browser with Canvas 2D, <code>localStorage</code>, ES6 and WebSocket support</li>
+      <li>No GPU, no plugins, no client-side installation</li>
     </ul>
   </div>
 </body>

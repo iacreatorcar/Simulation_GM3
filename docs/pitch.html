@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulation GM3 - Presentazione</title>
+<title>Simulation GM3 - Pitch</title>
 <style>
   :root {
     --bg: #000; --fg: #0f0; --fg-dim: #0a0; --panel: #001100; --border: #0f0;
@@ -59,55 +59,55 @@
   <div class="wrap">
     <header>
       <h1>SIMULATION GM3</h1>
-      <div class="tagline">Console luci da browser, ispirata al workflow grandMA3</div>
-      <div class="badge">Solo uso dimostrativo / training interno</div>
+      <div class="tagline">A browser-based lighting console, inspired by the grandMA3 workflow</div>
+      <div class="badge">Demo / internal training use only</div>
     </header>
 
-    <p>Simulation GM3 è un simulatore di consolle luci che gira interamente nel browser: nessuna installazione, nessun hardware dedicato, nessuna licenza software. Riproduce il flusso di lavoro base di una consolle da moving-light — patch, cue, playback, automazione — per far esercitare velocemente un operatore su concetti e comandi reali prima di toccare una console vera.</p>
+    <p>Simulation GM3 is a lighting console simulator that runs entirely in the browser: no installation, no dedicated hardware, no software license. It reproduces the core workflow of a moving-light console — patch, cue, playback, automation — so an operator can quickly practice real concepts and commands before touching an actual console.</p>
 
-    <h2>Perché</h2>
+    <h2>Why</h2>
     <div class="grid">
       <div class="card">
-        <h3>Formazione senza hardware</h3>
-        <p>Chi si avvicina a una consolle luci può esercitarsi su patch, cue e playback senza prenotare una console fisica.</p>
+        <h3>Training without hardware</h3>
+        <p>Anyone approaching a lighting console can practice patch, cues and playback without booking a physical console.</p>
       </div>
       <div class="card">
         <h3>Zero setup</h3>
-        <p><code>npm install && npm start</code> e si apre nel browser. Nessuna dipendenza frontend, nessun build step.</p>
+        <p><code>npm install && npm start</code> and it opens in the browser. No frontend dependencies, no build step.</p>
       </div>
       <div class="card">
-        <h3>Concetti trasferibili</h3>
-        <p>Command line, patch fixture, cue con effetto automatico, master/slave: stessa logica delle console professionali.</p>
+        <h3>Transferable concepts</h3>
+        <p>Command line, fixture patch, cues with automated effects, master/slave: the same logic as professional consoles.</p>
       </div>
     </div>
 
-    <h2>Come funziona (in breve)</h2>
+    <h2>How it works (in short)</h2>
     <div class="flow">
       <span class="step">Patch fixture</span><span class="arrow">→</span>
-      <span class="step">Imposta fader</span><span class="arrow">→</span>
+      <span class="step">Set faders</span><span class="arrow">→</span>
       <span class="step">Store Cue / Scene</span><span class="arrow">→</span>
       <span class="step">GO / Automation</span><span class="arrow">→</span>
-      <span class="step">Stage View live</span>
+      <span class="step">Live Stage View</span>
     </div>
 
-    <h2>Cosa include</h2>
+    <h2>What's included</h2>
     <div class="grid">
-      <div class="card"><h3>16 canali</h3><p>Fader drag/click, mouse e touch, con LED di stato.</p></div>
-      <div class="card"><h3>Patch &amp; Fixture Sheet</h3><p>12 tipi di fixture (PAR, Moving Head, Wash, Mirror Ball, Fog, Blinder...).</p></div>
-      <div class="card"><h3>Cue Pool con effetti</h3><p>Ogni cue può portare un effetto automatico (chaser/rainbow/strobe) al GO.</p></div>
-      <div class="card"><h3>Stage View</h3><p>Simulatore a canvas: fasci diversi per tipo di fixture, truss, palco.</p></div>
-      <div class="card"><h3>Design Creator</h3><p>Assegna colori per canale e salva il "look" come Design riutilizzabile.</p></div>
-      <div class="card"><h3>Catalyst</h3><p>Pannello media server (4 layer, blend, opacità) con preview composita reale.</p></div>
-      <div class="card"><h3>Timecode</h3><p>Sequenza automatica a tempo, richiama scene/effetti a marcatori prestabiliti.</p></div>
-      <div class="card"><h3>Command line + keypad</h3><p><code>AT</code>, <code>FULL</code>, <code>OFF</code>, <code>CLEAR</code>, tastierino fisico su schermo.</p></div>
+      <div class="card"><h3>16 channels</h3><p>Drag/click faders, mouse and touch, with status LEDs.</p></div>
+      <div class="card"><h3>Patch &amp; Fixture Sheet</h3><p>12 fixture types (PAR, Moving Head, Wash, Mirror Ball, Fog, Blinder...).</p></div>
+      <div class="card"><h3>Cue Pool with effects</h3><p>Each cue can carry an automated effect (chaser/rainbow/strobe) on GO.</p></div>
+      <div class="card"><h3>Stage View</h3><p>Canvas simulator: different beams per fixture type, truss, stage floor.</p></div>
+      <div class="card"><h3>Design Creator</h3><p>Assign colors per channel and save the "look" as a reusable Design.</p></div>
+      <div class="card"><h3>Catalyst</h3><p>Media-server panel (4 layers, blend, opacity) with a real composited preview.</p></div>
+      <div class="card"><h3>Timecode</h3><p>Time-based sequence, fires scenes/effects at pre-set marks.</p></div>
+      <div class="card"><h3>Command line + keypad</h3><p><code>AT</code>, <code>FULL</code>, <code>OFF</code>, <code>CLEAR</code>, physical on-screen keypad.</p></div>
     </div>
 
     <div class="callout">
-      <strong>Nota:</strong> il progetto è pensato per demo e training interno. Le cue vivono in memoria sul server (si perdono al riavvio), scene/patch/design vivono nel <code>localStorage</code> del browser. Non è pensato per uso multi-utente in produzione — dettagli e percorso di scalabilità in <a href="scheda-tecnica.html">scheda tecnica</a>.
+      <strong>Note:</strong> the project is intended for demos and internal training. Cues live in real time on Supabase (Postgres + Realtime), while scenes/patch/design live in the browser's <code>localStorage</code>. It's not intended for multi-tenant production use — details and scalability path in the <a href="scheda-tecnica.html">technical sheet</a>.
     </div>
 
     <footer>
-      Documentazione completa: <a href="manuale-uso.html">Manuale d'uso</a> · <a href="scheda-tecnica.html">Scheda tecnica</a> · Repo: <a href="https://github.com/iacreatorcar/Simulation_GM3">github.com/iacreatorcar/Simulation_GM3</a>
+      Full documentation: <a href="manuale-uso.html">User Manual</a> · <a href="scheda-tecnica.html">Technical Sheet</a> · Repo: <a href="https://github.com/iacreatorcar/Simulation_GM3">github.com/iacreatorcar/Simulation_GM3</a>
     </footer>
   </div>
 </body>
