@@ -172,8 +172,50 @@ window.GMA3 = window.GMA3 || {};
     }
   }
 
+  // --- Supabase: persistenza reale delle cue + sync realtime tra sessioni ------
+  // Se il client Supabase non e' configurato (niente .env / CDN non caricato),
+  // si ricade sulle vecchie rotte Express in memoria come fallback.
+  let sbClient = null;
+
+  async function initSupabase() {
+    try {
+      const res = await fetch('/api/config');
+      const cfg = await res.json();
+      if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || typeof window.supabase === 'undefined') {
+        console.log('[supabase] Non configurato, uso il fallback in memoria su Express');
+        return;
+      }
+      sbClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+      console.log('[supabase] Client inizializzato:', cfg.supabaseUrl);
+
+      // Realtime: qualunque client connesso vede subito le cue create/eliminate
+      // da un altro client, senza bisogno di ricaricare la pagina.
+      sbClient
+        .channel('cues-realtime')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'cues' }, (payload) => {
+          console.log('[supabase] Realtime event:', payload.eventType);
+          loadCues();
+        })
+        .subscribe();
+    } catch (err) {
+      console.error('[supabase] Init fallita, fallback in memoria:', err);
+    }
+  }
+
   async function createCue(name, fadeTime, effect) {
     try {
+      if (sbClient) {
+        const { data, error } = await sbClient
+          .from('cues')
+          .insert([{ name, fade_time: fadeTime, effect, faders: [...state.faders] }])
+          .select()
+          .single();
+        if (error) throw new Error(error.message);
+        toast(`Cue "${data.name}" stored`, 'success');
+        await loadCues();
+        return;
+      }
+
       const data = await apiRequest('/api/cue/create', {
         method: 'POST',
         body: JSON.stringify({ name, fadeTime, effect, faders: [...state.faders] })
@@ -187,6 +229,22 @@ window.GMA3 = window.GMA3 || {};
 
   async function loadCues() {
     try {
+      if (sbClient) {
+        const { data, error } = await sbClient.from('cues').select('*').order('id');
+        if (error) throw new Error(error.message);
+        const cues = data.map((row) => ({
+          id: row.id,
+          name: row.name,
+          fadeTime: row.fade_time,
+          effect: row.effect,
+          faders: row.faders,
+          createdAt: row.created_at
+        }));
+        renderCueList(cues);
+        setStatus(`${cues.length} cue(s) loaded (Supabase)`);
+        return;
+      }
+
       const data = await apiRequest('/api/cue/list');
       renderCueList(data.cues);
       setStatus(`${data.count} cue(s) loaded`);
@@ -212,6 +270,14 @@ window.GMA3 = window.GMA3 || {};
 
   async function deleteCue(id) {
     try {
+      if (sbClient) {
+        const { error } = await sbClient.from('cues').delete().eq('id', id);
+        if (error) throw new Error(error.message);
+        toast(`Cue #${id} deleted`, 'success');
+        await loadCues();
+        return;
+      }
+
       await apiRequest(`/api/cue/${id}`, { method: 'DELETE' });
       toast(`Cue #${id} deleted`, 'success');
       await loadCues();
@@ -1200,7 +1266,7 @@ window.GMA3 = window.GMA3 || {};
     initSetupPage();
     seedDemoScenes();
     renderScenes();
-    loadCues();
+    initSupabase().then(loadCues);
     initCommandLine();
     initKeypad();
     initTutorial();

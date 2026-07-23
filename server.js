@@ -1,6 +1,9 @@
 // server.js - GrandMA3 Training System backend
-// Server Express con API REST per gestione Cue, Scene e stato DMX in memoria.
+// Server Express: serve i file statici, endpoint di config per Supabase, e le
+// vecchie rotte /api/cue/* in memoria (lasciate come fallback/legacy - il
+// frontend ora parla direttamente con Supabase per la persistenza reale).
 
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 
@@ -121,6 +124,19 @@ app.delete('/api/cue/:id', (req, res) => {
 // --- Health check -----------------------------------------------------------
 app.get('/api/health', (req, res) => {
   res.json({ success: true, status: 'ok', uptime: process.uptime() });
+});
+
+// --- Config pubblica per il frontend -----------------------------------------
+// Espone URL e anon key di Supabase (letti da .env, mai committati) cosi' che
+// app.js possa configurare il client Supabase senza hardcodare credenziali nel
+// sorgente. L'anon key e' pensata da Supabase per essere esposta al client,
+// non e' un segreto (la sicurezza vera sta nelle Row Level Security policy).
+app.get('/api/config', (req, res) => {
+  res.json({
+    success: true,
+    supabaseUrl: process.env.SUPABASE_URL || null,
+    supabaseAnonKey: process.env.SUPABASE_ANON_KEY || null
+  });
 });
 
 // --- 404 handler ------------------------------------------------------------

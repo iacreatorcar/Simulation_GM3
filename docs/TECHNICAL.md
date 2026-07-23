@@ -64,17 +64,21 @@ All responses: `{ success: boolean, ...payload }`. Errors: `{ success: false, er
 
 ## Serverless considerations
 
-The current backend keeps cues in a process-memory array — this does **not** survive serverless cold starts or multiple concurrent instances (e.g. Vercel/Netlify functions, AWS Lambda). To deploy serverless:
+**Update: this has been done.** Cue persistence no longer depends on the Express in-memory array — `app.js` talks to **Supabase directly from the browser** (via the `@supabase/supabase-js` CDN client, see [API.md](API.md#supabase-integration)), with a Postgres table (`supabase/schema.sql`) and a Realtime subscription so every open session sees cues created/deleted elsewhere instantly.
 
-1. Replace the in-memory `cues` array with an external store reachable from any invocation: a managed DB (Postgres/Supabase, DynamoDB, Firestore) or a KV store (Redis, Vercel KV).
-2. Keep the route handlers' shape identical (`{ success, cue }`, `{ success, cues }`, etc.) so `app.js`'s `apiRequest()` wrapper needs no changes.
-3. `express.static` serving of `public/` can be replaced by the platform's static asset hosting; only the `/api/*` routes need to run as functions.
-4. `console.log` logging should be replaced with the platform's structured logging (stdout is usually captured automatically, so minimal change needed).
+The old `/api/cue/*` Express routes still exist as an **in-memory fallback**, used automatically when `.env` (`SUPABASE_URL`/`SUPABASE_ANON_KEY`) is missing — useful for offline development, but not durable.
 
-No frontend code depends on the server being stateful — scenes already live entirely in the browser, so a serverless migration only affects the Cue Pool feature.
+Practical effect for deployment:
+
+1. The static frontend (`public/`) can now be hosted anywhere static (Vercel, Netlify, GitHub Pages) with no server process at all, since cue persistence lives in Supabase, not in `server.js`.
+2. If `server.js` is kept (e.g. for the `/api/config` endpoint and the legacy fallback routes), it can still run as a single small Node process or be adapted into serverless functions per platform — it no longer needs to be stateful for cues to work.
+3. `console.log` logging should be replaced with the platform's structured logging if moved to a serverless runtime.
+
+Scenes/Patch/Design remain entirely client-side (`localStorage`), unaffected by any of this.
 
 ## Performance
 
-- 8 faders, DOM writes are `style.height`/`style.bottom`/`textContent` only — no layout thrashing, comfortably sustains 60fps drag.
-- `module-monitoring.js` polls state every 500ms via `setInterval`, cheap (8 numeric reads + string join).
-- No frameworks, no virtual DOM diffing, no bundler — first paint is a single HTML/CSS/JS request per file.
+- 16 faders, DOM writes are `style.height`/`style.bottom`/`textContent` only — no layout thrashing, comfortably sustains 60fps drag.
+- `module-monitoring.js` polls state every 500ms via `setInterval`, cheap (16 numeric reads + string join).
+- Supabase Realtime uses a single websocket channel per session; cue list re-fetches on each event rather than diffing, acceptable at demo scale (a handful of cues, a few concurrent sessions).
+- No frameworks, no virtual DOM diffing, no bundler — first paint is a single HTML/CSS/JS request per file (plus the Supabase CDN script).
