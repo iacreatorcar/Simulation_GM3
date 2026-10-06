@@ -1,4 +1,4 @@
-# Technical Reference - GrandMA3 Training System
+# Technical Reference - Simulation GM3 Training System
 
 ## Architecture
 

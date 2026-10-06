@@ -75,7 +75,7 @@
       <tr><td>Realtime persistence</td><td>Supabase (Postgres + Realtime), called directly from the browser</td></tr>
       <tr><td>Client persistence</td><td><code>localStorage</code> (scenes, patch, design, theme)</td></tr>
       <tr><td>Hosting</td><td>Vercel (static output + serverless functions in <code>api/</code>)</td></tr>
-      <tr><td>Graphics</td><td>Native 2D Canvas (Stage View, Catalyst preview)</td></tr>
+      <tr><td>Graphics</td><td>Native 2D Canvas (Stage View, media-server preview)</td></tr>
     </table>
 
     <h2 id="architecture">2. Architecture</h2>
@@ -125,7 +125,7 @@
     <pre>Store Scene → localStorage.setItem → render list
 GO → localStorage.getItem → state.faders = scene → repaint</pre>
     <h3>Automation</h3>
-    <pre>setInterval(N seconds) → next scene → apply faders → sync Catalyst layer</pre>
+    <pre>setInterval(N seconds) → next scene → apply faders → sync media-server layer</pre>
 
     <h2 id="api">5. REST API &amp; Supabase</h2>
     <table>

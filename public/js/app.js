@@ -1258,7 +1258,7 @@ window.GMA3 = window.GMA3 || {};
 
   // --- Init ----------------------------------------------------------------
   function init() {
-    console.log('GrandMA3 Training System: inizializzazione app.js');
+    console.log('Simulation GM3 Training System: inizializzazione app.js');
     initTheme();
     buildFaders();
     initPatch();

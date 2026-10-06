@@ -1,4 +1,4 @@
-/* style.css - Console GrandMA3-style, tema terminale verde */
+/* style.css - Console moving-light, tema terminale verde */
 
 :root {
   --bg: #000000;
@@ -759,7 +759,7 @@ body {
   flex-wrap: wrap;
 }
 
-/* --- Catalyst media server panel --- */
+/* --- Media server panel --- */
 .tab-pane-catalyst { display: block; padding: 12px; }
 
 .catalyst-body {

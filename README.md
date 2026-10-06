@@ -2,7 +2,7 @@
 
 # Simulation GM3
 
-**A browser-based lighting console trainer inspired by the grandMA3 workflow.**
+**A browser-based lighting console trainer built around a professional moving-light console workflow.**
 
 Zero frontend dependencies · Node.js/Express backend · Green-terminal aesthetic
 
@@ -38,10 +38,10 @@ Open **http://localhost:3000**. The console fills the viewport (16:9-oriented la
 | **Patch / Fixture Sheet** | Assign a name, fixture type (12 types incl. Moving Head, Wash, Mirror Ball, Fog, Blinder…) and DMX address per channel |
 | **Design Creator** | Assign a color per channel and save the combined look (levels + colors) as a reusable Design |
 | **Group Pool** | Group channels (e.g. `1,2,3`) and set their level together |
-| **Automation** | Loops through stored scenes at a configurable interval; also drives the Catalyst preview in sync |
+| **Automation** | Loops through stored scenes at a configurable interval; also drives the media-server preview in sync |
 | **Effects** | Chaser / Rainbow / Strobe presets plus 8 quick color swatches |
 | **Stage View** | Live canvas beam simulator with truss, stage floor, and **per-fixture-type rendering** (focused beams leave a gobo mark, washes flood the floor, mirror balls sparkle, fog hazes, strobes flash) |
-| **Catalyst** | Green Hippo–style 4-layer media panel with opacity/blend modes and a real-time composited output preview |
+| **Media Server** | 4-layer media-server panel with opacity/blend modes and a real-time composited output preview |
 | **Timecode** | Runs a clock and fires a pre-built scene/effect sequence at set marks |
 | **Grand Master / Sub Master** | Two master faders that scale the entire Stage View output |
 | **Pan/Tilt/Zoom/Color/Gobo encoders** | Draggable rotary controls (mouse + touch) wired live to the Stage View beams |
@@ -54,7 +54,7 @@ Open **http://localhost:3000**. The console fills the viewport (16:9-oriented la
 
 The console screen is organized into tabs, each a self-contained page:
 
-`Pools` → `Patch` → `Executor` → `Stage View` → `Design` → `Catalyst` → `Setup`
+`Pools` → `Patch` → `Executor` → `Stage View` → `Design` → `Media Server` → `Setup`
 
 A left icon rail (Setup, Help, Theme, quick jumps) and a right numbered rail (Fixture, Preset, Sequence Sheet, Tracking Sheet, Phaser+Steps, 3D, Timecode, Setup) mirror the navigation model of a real console.
 
@@ -79,7 +79,7 @@ public/                     Frontend (vanilla JS, no bundler)
     │                          command line, encoders, Stage View renderer
     └── module-*.js             Self-registering panels: advance, effects,
                                groups, automation, monitoring, export,
-                               hotkeys, timecode, catalyst
+                               hotkeys, timecode, media server
 
 server.js                    Express API: cue CRUD (in-memory), logging,
                               static file serving

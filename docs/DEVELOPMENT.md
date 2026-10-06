@@ -1,11 +1,11 @@
-# Developer Guide - GrandMA3 Training System
+# Developer Guide - Simulation GM3 Training System
 
 ## Stack
 
 - Backend: Node.js + Express (no DB, in-memory storage)
 - Frontend: HTML5 + CSS3 + Vanilla JS (zero dependencies, no framework)
 - Theme: green terminal (`#0f0` on `#000`), light variant via `data-theme`
-- Layout: mimics a real grandMA3 console — pool windows on screen, command line + playback strip at the bottom
+- Layout: mimics a professional moving-light console — pool windows on screen, command line + playback strip at the bottom
 
 ## Project structure
 

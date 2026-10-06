@@ -1,4 +1,4 @@
-// module-catalyst.js - Pannello media server stile Green Hippo Catalyst:
+// module-catalyst.js - Pannello media server:
 // layer video assegnabili, opacita', blend mode, preview output composito.
 // Puramente decorativo/dimostrativo (nessun video reale), ma la preview
 // canvas mostra davvero la composizione dei layer attivi in tempo reale.
@@ -128,7 +128,7 @@
   }
 
   // API pubblica: permette ad altri moduli (es. Automation) di pilotare i
-  // layer Catalyst - assegna un clip della libreria a un layer e ridisegna
+  // layer media server - assegna un clip della libreria a un layer e ridisegna
   // subito la preview, cosi' l'output cambia davvero durante una sequenza.
   function setLayerMediaByIndex(layerIndex, mediaIndex) {
     const layer = layers[layerIndex];

@@ -1,4 +1,4 @@
-# API Reference - GrandMA3 Training System
+# API Reference - Simulation GM3 Training System
 
 Base URL: `http://localhost:3000`
 

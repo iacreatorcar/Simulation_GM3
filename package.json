@@ -1,7 +1,7 @@
 {
   "name": "grandma3-training-system",
   "version": "1.0.0",
-  "description": "GrandMA3 Training System - simulatore console luci per training",
+  "description": "Simulation GM3 Training System - simulatore console luci per training",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

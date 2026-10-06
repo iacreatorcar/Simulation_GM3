@@ -1,4 +1,4 @@
-// server.js - GrandMA3 Training System backend
+// server.js - Simulation GM3 Training System backend
 // Server Express: serve i file statici, endpoint di config per Supabase, e le
 // vecchie rotte /api/cue/* in memoria (lasciate come fallback/legacy - il
 // frontend ora parla direttamente con Supabase per la persistenza reale).
@@ -151,5 +151,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`GrandMA3 Training System avviato su http://localhost:${PORT}`);
+  console.log(`Simulation GM3 Training System avviato su http://localhost:${PORT}`);
 });

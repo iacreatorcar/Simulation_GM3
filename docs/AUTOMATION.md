@@ -7,7 +7,7 @@ This training system currently runs standalone (in-browser fader/scene/cue state
 Both QLab and most modern consoles/mixers (including OSC-capable QL-series devices) accept **OSC (Open Sound Control)** messages over UDP. It's the natural bridge because:
 - It's a simple, well-documented UDP protocol (no vendor SDK required).
 - QLab listens for OSC commands out of the box (Workspace Settings → OSC Controls).
-- grandMA3 itself can send/receive OSC, so the same bridge concept extends to a real console later.
+- Professional consoles can send/receive OSC, so the same bridge concept extends to a real console later.
 
 ## What this app is missing today
 

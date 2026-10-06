@@ -1,4 +1,4 @@
-# User Guide - GrandMA3 Training System
+# User Guide - Simulation GM3 Training System
 
 ## Start
 
@@ -11,7 +11,7 @@ Open your browser at `http://localhost:3000`.
 
 ## Interface
 
-The screen is laid out as a set of pool windows, similar to the real grandMA3 console, with a command line and playback strip at the bottom.
+The screen is laid out as a set of pool windows, similar to a professional moving-light console, with a command line and playback strip at the bottom.
 
 ### Fader Sheet
 8 vertical faders (channels 1-8). Two ways to control them:

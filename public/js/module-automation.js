@@ -47,7 +47,7 @@
       document.getElementById('autoStatus').textContent = `Playing: ${scene.name}`;
       console.log('[module-automation] Riproduco scena', scene.name);
 
-      // Se il pannello Catalyst e' caricato, fa avanzare anche il layer 1
+      // Se il pannello media server e' caricato, fa avanzare anche il layer 1
       // dell'output preview in sincrono con la scena, cosi' l'automazione
       // pilota davvero sia le luci che il media server.
       if (window.GMA3.catalystSetLayer) {
